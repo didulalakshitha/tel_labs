@@ -31,12 +31,20 @@ ____
 
 ## APIs
 
+Postman file has been added for APIs testing.
+
+File name:\
+Service Plans.postman_collection.json
+
 ### Get the best price plan
 
 URL: \
 http://localhost:8080/api/plans?features=email,voice,admin
 
 Type: GET
+
+Request:\
+Parameters are passed in URL with property features.
 
 Response:
 ```
