@@ -1,0 +1,68 @@
+{
+	"info": {
+		"_postman_id": "1cc819c8-b6b8-491c-80c2-1b09df91eddd",
+		"name": "Service Plans",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Update plan",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "[\n    {\n        \"plan\": \"PLAN1\",\n        \"price\": 100,\n        \"features\": [\n            \"voice\",\n            \"email\"\n        ]\n    }, \n    {\n        \"plan\": \"PLAN2\",\n        \"price\": 150,\n        \"features\": [\n            \"email\",\n            \"database\", \n            \"admin\"\n        ]\n    }, \n    {\n        \"plan\": \"PLAN3\",\n        \"price\": 125,\n        \"features\": [\n            \"voice\",\n            \"admin\"\n        ]\n    }, \n    {\n        \"plan\": \"PLAN4\",\n        \"price\": 135,\n        \"features\": [\n            \"database\",\n            \"admin\"\n        ]\n    }\n]",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8080/api/plans",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"plans"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get best plans by features",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8080/api/plans?features=email,voice,admin&tes",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"plans"
+					],
+					"query": [
+						{
+							"key": "features",
+							"value": "email,voice,admin"
+						},
+						{
+							"key": "tes",
+							"value": null
+						}
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}
