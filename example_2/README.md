@@ -2,12 +2,12 @@
 
 Calculating the minimum price plans for given features.
 
-## Specification
+## Requirements
 
-openjdk 11.0.15
+openjdk 11.0.15 \
 Gradle 6.8.3
 
-## commands
+## Commands
 
 ### To build
 `gradle clean build`
