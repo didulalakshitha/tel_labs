@@ -19,35 +19,35 @@ import com.tel_labs.ex2bonus.service.PlanService;
 
 @RestController
 public class PlanController {
-	
-	private PlanService planService; 
-	
+
+	private PlanService planService;
+
 	@Autowired
 	public PlanController(PlanService planService) {
-		this.planService = planService; 
+		this.planService = planService;
 	}
-	
+
 	@PostMapping("/api/plans")
 	public String populatePlans(@RequestBody List<Plan> plans) {
 		PlanDataUtil.generatePlanFeatureMap(plans);
 		return "success";
 	}
-	
+
 	@GetMapping("/api/plans")
 	public PriceOutput getPlansByFeatures(@RequestParam String features) {
 		List<String> featuresList = new ArrayList<>();
-		
-		if (features.length() > 0) { 
+
+		if (features.length() > 0) {
 			features = features.trim();
-			String[] splits = features.split(",");			
-			
+			String[] splits = features.split(",");
+
 			for (String str : splits) {
 				featuresList.add(str);
 			}
 		}
 
 		if (featuresList.size() == 0) {
-			return null; 
+			return null;
 		}
 		return planService.generateOutput(featuresList);
 	}
