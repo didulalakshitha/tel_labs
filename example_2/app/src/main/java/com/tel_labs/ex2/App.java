@@ -18,6 +18,12 @@ public class App {
             Map<String, Plan> planFeatureMap = generator.generatePlanFeatureMap(args[0]);
             List<String> requiredFeatures = generator.generateRequiredFeatureList(args[1]);
 
+//            Map<String, Plan> planFeatureMap = generator.generatePlanFeatureMap("/home/didula/workspace_dlak/telepathy/tel_labs/example_2/Example1.txt");
+//            List<String> requiredFeatures = generator.generateRequiredFeatureList("F4,F7,F9,F6,F5,F8,F1,F3,F0");
+
+//            Map<String, Plan> planFeatureMap = generator.generatePlanFeatureMap("/home/didula/workspace_dlak/telepathy/tel_labs/example_2/Example2.txt");
+//            List<String> requiredFeatures = generator.generateRequiredFeatureList("email,voice,admin");
+
             PlanService service = new PlanService();
             PlanService.setPlanFeatureMap(planFeatureMap);
             PriceOutput output = service.generateOutput(requiredFeatures);

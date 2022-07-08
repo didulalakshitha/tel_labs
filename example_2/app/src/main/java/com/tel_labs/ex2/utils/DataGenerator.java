@@ -30,11 +30,11 @@ public class DataGenerator {
                 List<String> features = new ArrayList<>();
                 if (splits.length > 2) {
                     for (int i = 2; i < splits.length; i++) {
-                        features.add(splits[i]);
+                        features.add(splits[i].trim());
                     }
                 }
 
-                Plan plan = new Plan(splits[0], Integer.parseInt(splits[1]), features);
+                Plan plan = new Plan(splits[0], Integer.parseInt(splits[1].trim()), features);
                 planFeatureMap.put(splits[0], plan);
 
                 line = reader.readLine();

@@ -21,57 +21,76 @@ public class PlanService {
       PlanService.planFeatureMap = planFeatureMap;
     }
 
-    private List<Set<String>> findCombinationsOfPlans(List<String> requiredFeatures) {
-        List<Set<String>> combinations = new ArrayList<>();
+    private Set<String> findCombinationsOfPlans(List<String> requiredFeatures) {
+    	Map<String, List<String>> featurePlansMap = new HashMap<String, List<String>>();
+    	for (String requiredFeatureName : requiredFeatures) {
+    		List<String> plansListsByFeature = new ArrayList<>();
+    		for (String planFeatureMapKey : planFeatureMap.keySet()) {
+    			Plan plan = planFeatureMap.get(planFeatureMapKey);
+    			if (plan.isFeatureExist(requiredFeatureName)) {
+    				plansListsByFeature.add(planFeatureMapKey);
+    			}
+    		}
+    		featurePlansMap.put(requiredFeatureName, plansListsByFeature);
+    	}
 
-        for (String requiredFeatureName : requiredFeatures) {
-            List<Set<String>> newCombinations = new ArrayList<>();
+    	Set<String> plansListStrMap = new HashSet<>();
 
-            for (String planFeatureMapKey : planFeatureMap.keySet()) {
-                Plan plan = planFeatureMap.get(planFeatureMapKey);
-                if (plan.isFeatureExist(requiredFeatureName)) {
-                    if (combinations.size() == 0) {
-                        Set<String> tempSet = new HashSet<>();
-                        tempSet.add(planFeatureMapKey);
-                        newCombinations.add(tempSet);
-                    } else {
-                        for (Set<String> combinationSet : combinations) {
-                            Set<String> temp = new HashSet<>(combinationSet);
-                            temp.add(planFeatureMapKey);
-                            newCombinations.add(temp);
-                        }
-                    }
-                }
-            }
+    	for (String featurePlansMap_featureKey : featurePlansMap.keySet()) {
+    		Set<String> combinations = new HashSet<>();
 
-            combinations = newCombinations;
-        }
+    		List<String> featurePlansMap_plansValue = featurePlansMap.get(featurePlansMap_featureKey);
 
-        return combinations;
+    		if (plansListStrMap.isEmpty()) {
+    			combinations = new HashSet<>(featurePlansMap_plansValue);
+    		} else {
+    			for (String planValue : featurePlansMap_plansValue) {
+            		for (String str : plansListStrMap) {
+            			String[] strArr = str.split(",");
+            			Set<String> combiSetOfPlans = new HashSet<>(Arrays.asList(strArr));
+            			combiSetOfPlans.add(planValue);
+
+            			String[] arr = combiSetOfPlans.stream().toArray(String[]::new);
+            			Arrays.sort(arr);
+
+            			String tempStr = String.join(",", arr);
+
+            			combinations.add(tempStr);
+            		}
+    			}
+    		}
+
+    		plansListStrMap = combinations;
+    	}
+
+    	return plansListStrMap;
     }
 
     public PriceOutput generateOutput(List<String> requiredFeatures) {
-        List<Set<String>> combinations = findCombinationsOfPlans(requiredFeatures);
+    	Set<String> combinations = findCombinationsOfPlans(requiredFeatures);
+	    String[] foundPlans = new String[0];
+	    int foundMinPrice = 0;
 
-        String[] foundPlans = new String[0];
-        int foundMinPrice = 0;
-        for (Set<String> combination : combinations) {
-            int price = 0;
-            for (String planName : combination) {
-                Plan plan = planFeatureMap.get(planName);
-                price = price + plan.getPrice();
-            }
+	    for (String plansStr : combinations) {
+	    	String[] strArr = plansStr.split(",");
+	    	int price = 0;
 
-            if (foundMinPrice == 0 || foundMinPrice > price) {
-                foundMinPrice = price;
-                foundPlans = combination.stream().toArray(String[]::new);
-            }
-        }
+	    	for (String planName : strArr) {
+	    		Plan plan = planFeatureMap.get(planName);
+	    		price = price + plan.getPrice();
+	    	}
+
+			if (foundMinPrice == 0 || foundMinPrice > price) {
+				foundMinPrice = price;
+			    foundPlans = strArr;
+			}
+	    }
 
         if (foundPlans.length > 0) {
             Arrays.sort(foundPlans);
             return new PriceOutput(foundMinPrice, foundPlans);
         }
+
         return null;
     }
 }
